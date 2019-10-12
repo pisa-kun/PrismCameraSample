@@ -18,11 +18,11 @@ Prismのインストールとカメラアプリ作成過程
 
 1. VisualStudio2019から適当なプロジェクトを開いて、画面上部の[拡張機能]-[拡張機能の管理]を選択
 
-![pic1](https://github.com/pisa-kun/PrismCameraSample\Image\Readme\1.png)
+![pic1](https://github.com/pisa-kun/PrismCameraSample/blob/gh-pages/Image/Readme/1.png)
 
 2. ManageExtensionsの①[VisualStudioMarketplace]を選択し、②検索バーに"prism"を入力、③[Prism Template Pack]を選択してインストール
 
-![pic2](https://github.com/pisa-kun/PrismCameraSample\Image\Readme\2.png)
+![pic2](https://github.com/pisa-kun/PrismCameraSample/blob/gh-pages/Image/Readme/2.png)
 
 3. ウィザードが立ち上がるのでインストールを実行
 
@@ -30,7 +30,8 @@ Prismのインストールとカメラアプリ作成過程
 
 5. 検索バーでprismを調べ、Prism Blank App(WPF)を選択してプロジェクトを作成する
 
-![pic3](https://github.com/pisa-kun/PrismCameraSample\Image\Readme\3.png)
+![pic3](https://github.com/pisa-kun/PrismCameraSample/blob/gh-pages/Image/Readme/3.png)
+
 
 プロジェクト起動時はxamlなどにエラーがでますがPrismをNugetから落とせていないためです。
 
