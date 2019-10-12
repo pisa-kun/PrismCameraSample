@@ -9,8 +9,13 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel>
-            <TextBlock Text="hoge" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <TextBlock Text="撮影画面" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
             <Button Content="Next" Command="{Binding NextCommand}"></Button>
+            <Button Command="{Binding StartCaptureCommand}" Content="Start" HorizontalAlignment="Left" Width="75"/>
+            <Button Command="{Binding StopCaptureCommand}" Content="Stop" HorizontalAlignment="Left" Width="75"/>
+            <Viewbox Height="300">
+                <Image Source="{Binding Bmp}" />
+            </Viewbox>
         </StackPanel>
     </Grid>
 </UserControl>

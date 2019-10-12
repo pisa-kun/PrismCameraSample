@@ -71,6 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Camera.cs" />
     <Compile Include="ViewModels\SelectScreenViewModel.cs" />
     <Compile Include="Views\SelectScreen.xaml.cs">
       <DependentUpon>SelectScreen.xaml</DependentUpon>
@@ -125,6 +126,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="OpenCvSharp3-AnyCPU">
+      <Version>4.0.0.20181129</Version>
+    </PackageReference>
     <PackageReference Include="Prism.Unity" Version="7.2.0.1367" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,6 @@
-﻿using Prism.Commands;
+﻿/// MainWindowのViewModel
+
 using Prism.Mvvm;
-using Prism.Regions;
-using PrismCameraSample.Views;
 
 namespace PrismCameraSample.ViewModels
 {

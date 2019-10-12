@@ -8,11 +8,29 @@ using Prism.Regions;
 using PrismCameraSample.Views;
 using System;
 using System.Windows;
+using System.Windows.Media.Imaging;
+using PrismCameraSample.Models;
+using System.Threading.Tasks;
 
 namespace PrismCameraSample.ViewModels
 {
     public class CameraScreenViewModel : BindableBase, IConfirmNavigationRequest, IJournalAware, IRegionMemberLifetime
     {
+        /// <summary>
+        /// Modelのインスタンスを格納
+        /// </summary>
+        Camera camera;
+
+        bool isTask = true;
+
+        /// <summary>
+        /// 画面に表示するbitmap
+        /// </summary>
+        private WriteableBitmap bmp;
+
+        private DelegateCommand startCaptureCommand;
+        private DelegateCommand stopCaptureCommand;
+
         public bool KeepAlive => false;
 
         private IRegionNavigationService RegionNavigationService { get; set; }
@@ -21,6 +39,19 @@ namespace PrismCameraSample.ViewModels
         /// 次画面に行くコマンド
         /// </summary>
         public DelegateCommand NextCommand { get; }
+
+        public DelegateCommand StartCaptureCommand { get; }
+
+        public DelegateCommand StopCaptureCommand { get; }
+
+        /// <summary>
+        /// Bindingするプロパティ
+        /// </summary>
+        public WriteableBitmap Bmp
+        {
+            get { return this.bmp; }
+            set { SetProperty(ref this.bmp, value); }
+        }
 
         /// <summary>
         /// コンストラクタでコマンドを初期化してセット
@@ -32,9 +63,13 @@ namespace PrismCameraSample.ViewModels
                 var param = new NavigationParameters();
                 param.Add("TargetData", Visibility.Visible); // パラメータをkeyとvalueの組み合わせで追加
 
+                StopCapture(); // カメラの映像を止める
                 // 第二引数にパラメータを渡すと、viewが切り替わった先でパラメータを受け取る
                 RegionNavigationService.RequestNavigate(nameof(SelectScreen), param);
             });
+
+            StartCaptureCommand = new DelegateCommand(() => StartCapture());
+            StopCaptureCommand = new DelegateCommand(() => StopCapture());
         }
 
         public void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback) => continuationCallback(true);
@@ -56,5 +91,34 @@ namespace PrismCameraSample.ViewModels
         }
 
         public bool PersistInHistory() => true;
+        
+        /// <summary>
+        /// カメラを起動する
+        /// </summary>
+        private async void StartCapture()
+        {
+            this.camera = new Camera();
+            await ShowImage();
+        }
+      
+        /// <summary>
+        /// カメラを止める
+        /// </summary>
+        private void StopCapture() => this.isTask = false;
+
+        /// <summary>
+        /// ModelsのカメラからBitmapを取得する
+        /// </summary>
+        /// <returns></returns>
+        private async Task ShowImage()
+        {
+            while(isTask)
+            {
+                Bmp = this.camera.Capture(); // プロパティにカメラの映像をセット
+                if (Bmp == null) break;
+
+                await Task.Delay(30); //30フレームごとに送るように設定
+            }
+        }
     }
 }
