@@ -18,14 +18,14 @@ namespace PrismCameraSample.ViewModels
 
         /// <summary>
         /// バインディング用の変数
-        /// 最初は表示しないのでHidden
+        /// 最初は表示しないのでfalse
         /// </summary>
-        private Visibility viewboxSampleVisibility = Visibility.Hidden;
+        private bool viewboxSampleVisibility = false;
 
         /// <summary>
         /// SetPropertyで変数が変化したときにviewに通知
         /// </summary>
-        public Visibility ViewboxSampleVisibility
+        public bool ViewboxSampleVisibility
         {
             get { return this.viewboxSampleVisibility; }
             set { SetProperty(ref this.viewboxSampleVisibility, value); }
@@ -65,7 +65,7 @@ namespace PrismCameraSample.ViewModels
             if (navigationContext.Parameters["TargetData"] != null)
             {
                 // Camera画面から受け取ったパラメータを照合してバインドさせる
-                ViewboxSampleVisibility = (Visibility)navigationContext.Parameters["TargetData"];
+                ViewboxSampleVisibility = (bool)navigationContext.Parameters["TargetData"];
             }
             RegionNavigationService = navigationContext.NavigationService;
         }

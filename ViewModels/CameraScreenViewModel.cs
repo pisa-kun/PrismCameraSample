@@ -28,9 +28,6 @@ namespace PrismCameraSample.ViewModels
         /// </summary>
         private WriteableBitmap bmp;
 
-        private DelegateCommand startCaptureCommand;
-        private DelegateCommand stopCaptureCommand;
-
         public bool KeepAlive => false;
 
         private IRegionNavigationService RegionNavigationService { get; set; }
@@ -58,16 +55,7 @@ namespace PrismCameraSample.ViewModels
         /// </summary>
         public CameraScreenViewModel()
         {
-            NextCommand = new DelegateCommand(() =>
-            {
-                var param = new NavigationParameters();
-                param.Add("TargetData", Visibility.Visible); // パラメータをkeyとvalueの組み合わせで追加
-
-                StopCapture(); // カメラの映像を止める
-                // 第二引数にパラメータを渡すと、viewが切り替わった先でパラメータを受け取る
-                RegionNavigationService.RequestNavigate(nameof(SelectScreen), param);
-            });
-
+            NextCommand = new DelegateCommand(() => NextButtonAction());
             StartCaptureCommand = new DelegateCommand(() => StartCapture());
             StopCaptureCommand = new DelegateCommand(() => StopCapture());
         }
@@ -114,11 +102,31 @@ namespace PrismCameraSample.ViewModels
         {
             while(isTask)
             {
-                Bmp = this.camera.Capture(); // プロパティにカメラの映像をセット
-                if (Bmp == null) break;
-
+                try
+                {
+                    Bmp = this.camera.Capture(); // プロパティにカメラの映像をセット
+                    if (Bmp == null) break;
+                }
+                catch
+                {
+                    MessageBox.Show("カメラが起動できませんでした");
+                }
                 await Task.Delay(30); //30フレームごとに送るように設定
             }
+        }
+
+        /// <summary>
+        /// 次へのボタンを押したときの処理
+        /// </summary>
+        private void NextButtonAction()
+        {
+            var param = new NavigationParameters();
+            param.Add("TargetData", true); // パラメータをkeyとvalueの組み合わせで追加
+
+            StopCapture(); // カメラの映像を止める
+          
+            // 第二引数にパラメータを渡すと、viewが切り替わった先でパラメータを受け取る
+            RegionNavigationService.RequestNavigate(nameof(SelectScreen), param);
         }
     }
 }
