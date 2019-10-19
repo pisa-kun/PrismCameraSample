@@ -14,9 +14,13 @@ namespace PrismCameraSample.Models
     public class Camera
     {
         #region フィールド変数
-        VideoCapture capture = null;
-        Mat frame = null;
+        private VideoCapture capture = null;
+        private Mat frame = null;
 
+        #endregion
+
+        #region プロパティ
+        public WriteableBitmap ViewImage { get; private set; }
         #endregion
 
         #region コンストラクタ
@@ -37,11 +41,11 @@ namespace PrismCameraSample.Models
         /// ViewModelに渡すようにWritalbleBitmapでカメラ映像を渡す
         /// </summary>
         /// <returns></returns>
-        public WriteableBitmap Capture()
+        public async Task Capture()
         {
+            await Task.Delay(30);
             capture.Read(frame);
-            if (frame.Empty()) return null;
-            return frame.ToWriteableBitmap();
+            ViewImage = frame.ToWriteableBitmap();
         }
         #endregion
 

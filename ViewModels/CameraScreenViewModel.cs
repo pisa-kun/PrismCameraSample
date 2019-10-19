@@ -19,9 +19,9 @@ namespace PrismCameraSample.ViewModels
         /// <summary>
         /// Modelのインスタンスを格納
         /// </summary>
-        Camera camera;
+        private Camera camera;
 
-        bool isTask = true;
+        private bool isTask = true;
 
         /// <summary>
         /// 画面に表示するbitmap
@@ -85,35 +85,26 @@ namespace PrismCameraSample.ViewModels
         /// </summary>
         private async void StartCapture()
         {
-            this.camera = new Camera();
-            await ShowImage();
+            this.camera = this.camera ?? new Camera();
+            this.isTask = true;
+            while (isTask)
+            {
+                try
+                {
+                    await this.camera.Capture();
+                    Bmp = camera.ViewImage; // プロパティにカメラの映像をセット
+                }
+                catch
+                {
+                    MessageBox.Show("カメラが起動できませんでした");
+                }
+            }
         }
       
         /// <summary>
         /// カメラを止める
         /// </summary>
         private void StopCapture() => this.isTask = false;
-
-        /// <summary>
-        /// ModelsのカメラからBitmapを取得する
-        /// </summary>
-        /// <returns></returns>
-        private async Task ShowImage()
-        {
-            while(isTask)
-            {
-                try
-                {
-                    Bmp = this.camera.Capture(); // プロパティにカメラの映像をセット
-                    if (Bmp == null) break;
-                }
-                catch
-                {
-                    MessageBox.Show("カメラが起動できませんでした");
-                }
-                await Task.Delay(30); //30フレームごとに送るように設定
-            }
-        }
 
         /// <summary>
         /// 次へのボタンを押したときの処理
